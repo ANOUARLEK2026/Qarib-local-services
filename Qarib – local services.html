@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0e5d52"><link rel="icon" href="icon-192.png"><title>Qarib – local services</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#eef2f1;--surface:#fff;--ink:#12302b;--mute:#5b706b;--line:#d5dfdc;--brand:#0e5d52;--brand-ink:#fff;--sun:#f0a52c;--wa:#1fa855;--wa-ink:#fff;--star:#e08a00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1917;--surface:#152724;--ink:#e6f1ee;--mute:#92aaa4;--line:#27403b;--brand:#59c7b3;--brand-ink:#08201c;--sun:#f0b24a;--wa:#2bbf6a;--star:#f0b24a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1917;--surface:#152724;--ink:#e6f1ee;--mute:#92aaa4;--line:#27403b;--brand:#59c7b3;--brand-ink:#08201c;--sun:#f0b24a;--wa:#2bbf6a;--star:#f0b24a;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--surface:#152724}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Cairo,system-ui,Segoe UI,Tahoma,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:880px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-weight:800;font-size:22px;color:var(--brand);letter-spacing:.2px}
+.langs{display:flex;gap:4px}
+.langs button{border:1px solid var(--line);background:var(--surface);padding:4px 10px;border-radius:8px;cursor:pointer}
+.langs button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+h1{font-size:clamp(30px,7vw,48px);line-height:1.1;margin:28px 0 6px;font-weight:800;max-width:14ch}
+.sub{color:var(--mute);margin:0 0 18px}
+.search{width:100%;padding:13px 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface)}
+.search:focus,button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:14px 0 6px;scrollbar-width:thin}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0 14px;color:var(--mute)}
+.bar select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.bar label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.list{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:start}
+.card:hover{border-color:var(--brand)}
+.top{display:flex;gap:12px;align-items:center}
+.av{width:46px;height:46px;border-radius:12px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:800;font-size:20px;flex:none}
+.name{font-weight:600;line-height:1.2}
+.meta{color:var(--mute);font-size:14px}
+.stars{color:var(--star);font-weight:600}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--wa);margin-inline-end:5px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wa{background:var(--wa);color:var(--wa-ink);border:0;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.ghost{background:transparent;border:1.5px solid var(--line);border-radius:12px;padding:9px 14px;cursor:pointer}
+.heart{border:0;background:none;font-size:22px;cursor:pointer;line-height:1;color:var(--mute)}
+.heart[aria-pressed="true"]{color:#d6455d}
+.fab{margin-top:22px;width:100%;background:var(--sun);color:#2a1d00;border:0;border-radius:14px;padding:14px;font-weight:800;cursor:pointer}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.sheet.on{display:flex}
+.panel{background:var(--surface);width:100%;max-width:560px;max-height:92%;overflow:auto;border-radius:20px 20px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px))}
+.panel h2{margin:0 0 4px}
+.rev{border-top:1px solid var(--line);padding:10px 0}
+.field{display:grid;gap:4px;margin:10px 0}
+.field input,.field select,.field textarea{padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg)}
+.rate{display:flex;gap:4px}
+.rate button{background:none;border:0;font-size:28px;cursor:pointer;color:var(--line);padding:0}
+.rate button.on{color:var(--star)}
+.note{font-size:13px;color:var(--mute);margin-top:18px}
+.empty{padding:30px;text-align:center;color:var(--mute);border:1.5px dashed var(--line);border-radius:16px}
+body{padding-bottom:78px}
+nav{position:fixed;inset:auto 0 0 0;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));z-index:10}
+nav button{flex:1;background:none;border:0;padding:4px 2px;cursor:pointer;color:var(--mute);font-size:13px}
+nav button[aria-pressed="true"]{color:var(--brand);font-weight:800}
+nav button b{display:block;font-size:20px;font-weight:400}
+.toast{position:fixed;bottom:92px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;z-index:30}
+.tag{display:inline-block;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;font-size:13px;color:var(--mute)}
+.stat b{display:block;font-size:24px;color:var(--ink)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+.box select,.box input,.box textarea{padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg)}
+</style>
+</head>
+<body>
+<div class="wrap" id="v1">
+<header><div class="brand">قريب · Qarib</div><div style="display:flex;gap:8px;align-items:center"><button class="ghost" id="th" aria-label="theme" style="padding:4px 10px">◐</button><div class="langs" id="langs"></div></div></header>
+<h1 id="h1"></h1>
+<p class="sub" id="sub"></p>
+<input class="search" id="q" type="search">
+<div class="chips" id="chips"></div>
+<div class="bar">
+<label><input type="checkbox" id="av"> <span id="avl"></span></label>
+<label><span id="sortl"></span> <select id="sort"></select></label>
+<label><input type="checkbox" id="favo"> <span id="favl"></span></label>
+<label><input type="checkbox" id="ver"> <span id="verl"></span></label>
+<label><select id="minr"></select></label>
+<label><span id="mpl"></span> <input type="range" id="maxp" min="500" max="5000" step="100" value="5000"> <b id="mpv"></b></label>
+<button class="ghost" id="vw" style="padding:4px 12px"></button>
+</div>
+<div class="list" id="list"></div>
+<button class="fab" id="join"></button>
+<p class="note" id="note"></p>
+</div>
+<div class="wrap" id="v2" hidden></div><nav id="nav"></nav>
+<div class="sheet" id="sheet"><div class="panel" id="panel"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="qarib-api.js"></script>
+<script>
+var T={
+en:{dir:"ltr",h1:"Find help near you",sub:"Plumbers, tutors, drivers and more. Chat with them directly on WhatsApp.",q:"Search by name or skill",all:"All",av:"Available now",sort:"Sort",s1:"Top rated",s2:"Nearest",fav:"Saved only",wa:"Contact on WhatsApp",rev:"Reviews",rate:"Rate this provider",cm:"Write a comment (optional)",send:"Post review",nor:"No reviews yet. Contact them, then be the first to rate.",need:"Contact the provider on WhatsApp first, then you can leave a review.",join:"I offer a service: join Qarib",jt:"Join as a provider",nm:"Your name",ph:"WhatsApp number (e.g. 213550000000)",cat:"Category",pr:"Starting price (DZD)",yr:"Years of experience",save:"Save profile",close:"Close",empty:"No providers match. Try another category or clear filters.",km:"km",da:"DZD",ye:"yrs",msg:"Hello, I found you on Qarib and I need help with: ",note:"Demo data. Distances, numbers and providers are placeholders; new profiles are saved only in this browser.",bad:"Enter a name and a valid number with country code.",thanks:"Review posted",on:"Open now",off:"Busy",ver:"Verified",mp:"Max price",vw1:"List",vw2:"Radar",ex:"Explore",bk:"Bookings",rq:"Requests",me:"My profile",book:"Book",call:"Call",share:"Share",report:"Report",rpd:"Report sent. Thank you.",dt:"Date",tm:"Time",nt:"Notes",bsend:"Send booking on WhatsApp",nobk:"No bookings yet. Open a provider and tap Book.",st1:"Pending",st2:"Confirmed",st3:"Done",st4:"Cancelled",rqt:"Post a request",dsc:"Describe the job",bud:"Budget (DZD)",urg:"Urgency",u1:"Today",u2:"This week",u3:"Flexible",mt:"Best matches",rqs:"Post request",vws:"Profile views",cts:"WhatsApp taps",reply:"Reply",rst:"Reset demo data",nopro:"You have no provider profile yet.",jobs:"jobs done",svc:"Services and prices",bio:"{y} years as a {c}. Clear prices, on time, quick WhatsApp replies.",bmsg:"Booking request via Qarib: {c} on {d} at {h}. Notes: {n}",rmsg:"Quote request via Qarib: {c}. {d} Budget: {b} DZD. Urgency: {u}",pd:"Pick a date.",sv2:"Saved"},
+fr:{dir:"ltr",h1:"Trouvez de l’aide près de chez vous",sub:"Plombiers, profs, chauffeurs et plus. Discutez directement sur WhatsApp.",q:"Chercher par nom ou métier",all:"Tous",av:"Disponible",sort:"Trier",s1:"Mieux notés",s2:"Plus proches",fav:"Favoris",wa:"Contacter sur WhatsApp",rev:"Avis",rate:"Notez ce prestataire",cm:"Votre commentaire (facultatif)",send:"Publier l’avis",nor:"Pas encore d’avis. Contactez-le puis soyez le premier à noter.",need:"Contactez d’abord le prestataire sur WhatsApp, puis laissez un avis.",join:"Je propose un service : rejoindre Qarib",jt:"Devenir prestataire",nm:"Votre nom",ph:"Numéro WhatsApp (ex. 213550000000)",cat:"Catégorie",pr:"Prix de départ (DZD)",yr:"Années d’expérience",save:"Enregistrer",close:"Fermer",empty:"Aucun résultat. Essayez une autre catégorie.",km:"km",da:"DA",ye:"ans",msg:"Bonjour, je vous ai trouvé sur Qarib et j’ai besoin d’aide pour : ",note:"Données de démo. Distances, numéros et profils sont fictifs ; les nouveaux profils restent dans ce navigateur.",bad:"Entrez un nom et un numéro valide avec indicatif.",thanks:"Avis publié",on:"Disponible",off:"Occupé",ver:"Vérifié",mp:"Prix max",vw1:"Liste",vw2:"Radar",ex:"Explorer",bk:"Réservations",rq:"Demandes",me:"Mon profil",book:"Réserver",call:"Appeler",share:"Partager",report:"Signaler",rpd:"Signalement envoyé. Merci.",dt:"Date",tm:"Heure",nt:"Notes",bsend:"Envoyer la réservation sur WhatsApp",nobk:"Aucune réservation. Ouvrez un profil et touchez Réserver.",st1:"En attente",st2:"Confirmée",st3:"Terminée",st4:"Annulée",rqt:"Publier une demande",dsc:"Décrivez le travail",bud:"Budget (DZD)",urg:"Urgence",u1:"Aujourd’hui",u2:"Cette semaine",u3:"Flexible",mt:"Meilleurs choix",rqs:"Publier la demande",vws:"Vues du profil",cts:"Clics WhatsApp",reply:"Répondre",rst:"Réinitialiser la démo",nopro:"Vous n’avez pas encore de profil prestataire.",jobs:"missions",svc:"Services et prix",bio:"{y} ans comme {c}. Prix clairs, ponctuel, réponses rapides sur WhatsApp.",bmsg:"Demande de réservation via Qarib : {c} le {d} à {h}. Notes : {n}",rmsg:"Demande de devis via Qarib : {c}. {d} Budget : {b} DZD. Urgence : {u}",pd:"Choisissez une date.",sv2:"Enregistré"},
+ar:{dir:"rtl",h1:"اعثر على مساعدة قريبة منك",sub:"سبّاكون ومدرّسون وسائقون وغيرهم. تواصل معهم مباشرة عبر واتساب.",q:"ابحث بالاسم أو المهنة",all:"الكل",av:"متاح الآن",sort:"ترتيب",s1:"الأعلى تقييمًا",s2:"الأقرب",fav:"المفضلة فقط",wa:"تواصل عبر واتساب",rev:"التقييمات",rate:"قيّم مقدّم الخدمة",cm:"اكتب تعليقًا (اختياري)",send:"نشر التقييم",nor:"لا توجد تقييمات بعد. تواصل معه أولًا ثم كن أول من يقيّم.",need:"تواصل مع مقدّم الخدمة عبر واتساب أولًا ثم اترك تقييمًا.",join:"أقدّم خدمة: انضم إلى قريب",jt:"انضم كمقدّم خدمة",nm:"اسمك",ph:"رقم واتساب (مثال 213550000000)",cat:"الفئة",pr:"السعر ابتداءً من (دج)",yr:"سنوات الخبرة",save:"حفظ الملف",close:"إغلاق",empty:"لا نتائج. جرّب فئة أخرى.",km:"كم",da:"دج",ye:"سنة",msg:"مرحبًا، وجدتك على تطبيق قريب وأحتاج مساعدة في: ",note:"بيانات تجريبية. المسافات والأرقام والملفات وهمية، والملفات الجديدة تُحفظ في هذا المتصفح فقط.",bad:"أدخل اسمًا ورقمًا صحيحًا مع رمز الدولة.",thanks:"تم نشر التقييم",on:"متاح",off:"مشغول",ver:"موثّق",mp:"أقصى سعر",vw1:"قائمة",vw2:"رادار",ex:"استكشاف",bk:"الحجوزات",rq:"الطلبات",me:"ملفي",book:"احجز",call:"اتصال",share:"مشاركة",report:"إبلاغ",rpd:"تم الإبلاغ. شكرًا لك.",dt:"التاريخ",tm:"الوقت",nt:"ملاحظات",bsend:"أرسل الحجز عبر واتساب",nobk:"لا حجوزات بعد. افتح ملف مقدّم خدمة واضغط احجز.",st1:"قيد الانتظار",st2:"مؤكد",st3:"منتهٍ",st4:"ملغى",rqt:"انشر طلبًا",dsc:"صف العمل المطلوب",bud:"الميزانية (دج)",urg:"الاستعجال",u1:"اليوم",u2:"هذا الأسبوع",u3:"مرن",mt:"أفضل المطابقات",rqs:"انشر الطلب",vws:"مشاهدات الملف",cts:"نقرات واتساب",reply:"ردّ",rst:"إعادة ضبط البيانات التجريبية",nopro:"ليس لديك ملف مقدّم خدمة بعد.",jobs:"عملًا منجزًا",svc:"الخدمات والأسعار",bio:"{y} سنوات كـ{c}. أسعار واضحة والتزام بالمواعيد وردّ سريع على واتساب.",bmsg:"طلب حجز عبر قريب: {c} بتاريخ {d} الساعة {h}. ملاحظات: {n}",rmsg:"طلب عرض سعر عبر قريب: {c}. {d} الميزانية: {b} دج. الاستعجال: {u}",pd:"اختر تاريخًا.",sv2:"تم الحفظ"}
+};
+var CATS={plumber:{en:"Plumber",fr:"Plombier",ar:"سبّاك",i:"🔧"},electrician:{en:"Electrician",fr:"Électricien",ar:"كهربائي",i:"💡"},tutor:{en:"Tutor",fr:"Professeur",ar:"مدرّس",i:"📚"},driver:{en:"Driver",fr:"Chauffeur",ar:"سائق",i:"🚗"},mechanic:{en:"Mechanic",fr:"Mécanicien",ar:"ميكانيكي",i:"⚙️"},painter:{en:"Painter",fr:"Peintre",ar:"طلاء",i:"🎨"}};
+var SEED=[
+{id:1,name:"Karim B.",cat:"plumber",price:1500,yrs:9,km:1.2,av:1,ph:"213550000001",r:[[5,"Fast and clean work."],[4,"Arrived on time."]]},
+{id:2,name:"Samir L.",cat:"plumber",price:1200,yrs:4,km:3.4,av:0,ph:"213550000002",r:[[4,""]]},
+{id:3,name:"Nadia H.",cat:"tutor",price:1000,yrs:6,km:2.1,av:1,ph:"213550000003",r:[[5,"Math grades went up."],[5,""],[4,""]]},
+{id:4,name:"Youcef M.",cat:"tutor",price:800,yrs:3,km:5.0,av:1,ph:"213550000004",r:[[4,"Patient teacher."]]},
+{id:5,name:"Hocine D.",cat:"driver",price:600,yrs:12,km:0.8,av:1,ph:"213550000005",r:[[5,"Safe and punctual."],[5,""]]},
+{id:6,name:"Rachid T.",cat:"electrician",price:1800,yrs:15,km:4.2,av:1,ph:"213550000006",r:[[5,"Fixed it in one visit."],[4,""]]},
+{id:7,name:"Amine K.",cat:"mechanic",price:2000,yrs:8,km:6.3,av:0,ph:"213550000007",r:[[4,""],[3,"A bit slow."]]},
+{id:8,name:"Salima R.",cat:"painter",price:2500,yrs:7,km:2.9,av:1,ph:"213550000008",r:[[5,"Beautiful finish."]]}
+];
+var S={lang:"en",cat:"all",q:"",av:false,favo:false,sort:"rating",data:null,fav:[],contacted:[]};
+function ld(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+S.data=ld("qarib_data",null)||SEED.map(function(p){p.r=p.r.map(function(x){return{s:x[0],c:x[1]}});return p});
+S.fav=ld("qarib_fav",[]);S.contacted=ld("qarib_ct",[]);S.lang=ld("qarib_lang","en");
+function t(k){return T[S.lang][k]}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function avg(p){return p.r.length?p.r.reduce(function(a,b){return a+b.s},0)/p.r.length:0}
+function $(id){return document.getElementById(id)}
+function cname(c){return CATS[c][S.lang]}
+function waLink(p){return "https://wa.me/"+p.ph+"?text="+encodeURIComponent(t("msg")+cname(p.cat))}
+function shell(){
+ document.documentElement.lang=S.lang;document.documentElement.dir=t("dir");
+ $("langs").innerHTML=["ar","fr","en"].map(function(l){return '<button aria-pressed="'+(l==S.lang)+'" data-l="'+l+'">'+l.toUpperCase()+'</button>'}).join("");
+ $("h1").textContent=t("h1");$("sub").textContent=t("sub");$("q").placeholder=t("q");
+ $("avl").textContent=t("av");$("sortl").textContent=t("sort");$("favl").textContent=t("fav");
+ $("sort").innerHTML='<option value="rating">'+t("s1")+'</option><option value="km">'+t("s2")+'</option>';$("sort").value=S.sort;
+ $("join").textContent=t("join");$("note").textContent=t("note");
+ var h='<button class="chip" aria-pressed="'+(S.cat=="all")+'" data-c="all">'+t("all")+'</button>';
+ for(var c in CATS)h+='<button class="chip" aria-pressed="'+(S.cat==c)+'" data-c="'+c+'">'+CATS[c].i+" "+cname(c)+'</button>';
+ $("chips").innerHTML=h;list();
+}
+function list(){
+ var q=S.q.trim().toLowerCase();
+ var a=S.data.filter(function(p){return(S.cat=="all"||p.cat==S.cat)&&(!S.av||p.av)&&(!S.ver||p.ver)&&avg(p)>=S.minr&&p.price<=S.maxp&&(!S.favo||S.fav.indexOf(p.id)>-1)&&(!q||(p.name+" "+cname(p.cat)).toLowerCase().indexOf(q)>-1)});
+ a.sort(function(x,y){return S.sort=="km"?x.km-y.km:avg(y)-avg(x)});
+ $("list").innerHTML=a.length?a.map(function(p){
+  return '<div class="card" tabindex="0" role="button" data-p="'+p.id+'"><div class="top"><div class="av">'+esc(p.name[0])+'</div><div style="flex:1"><div class="name">'+esc(p.name)+(p.ver?' <span style="color:var(--brand)">✔</span>':'')+'</div><div class="meta">'+CATS[p.cat].i+" "+cname(p.cat)+" · "+p.yrs+" "+t("ye")+'</div></div><button class="heart" data-f="'+p.id+'" aria-pressed="'+(S.fav.indexOf(p.id)>-1)+'" aria-label="♥">'+(S.fav.indexOf(p.id)>-1?"♥":"♡")+'</button></div><div class="row"><span class="stars">★ '+(avg(p)?avg(p).toFixed(1):"–")+' <span class="meta">('+p.r.length+')</span></span><span class="meta">'+p.km.toFixed(1)+" "+t("km")+'</span></div><div class="row"><span class="meta"><span class="dot" style="background:'+(p.av?"var(--wa)":"var(--line)")+'"></span>'+(p.av?t("on"):t("off"))+'</span><span class="meta">'+p.price+" "+t("da")+'+</span></div></div>'}).join(""):'<div class="empty" style="grid-column:1/-1">'+t("empty")+'</div>';if(S.vw&&a.length)radar(a);
+}
+function openSheet(h){$("panel").innerHTML=h;$("sheet").classList.add("on")}
+function closeSheet(){$("sheet").classList.remove("on")}
+var rating=0;
+function profile(id){
+ var p=S.data.filter(function(x){return x.id==id})[0];if(!p)return;rating=0;
+ var can=S.contacted.indexOf(p.id)>-1;p.vw=(p.vw||0)+1;save();Q.rev(p);
+ var revs=p.r.length?p.r.slice().reverse().map(function(r){return '<div class="rev"><span class="stars">'+"★".repeat(r.s)+"☆".repeat(5-r.s)+'</span><div>'+esc(r.c)+'</div>'+(r.re?'<div class="meta">↳ '+esc(r.re)+'</div>':'')+'</div>'}).join(""):'<p class="meta">'+t("nor")+'</p>';
+ var form=can?'<div class="field"><label>'+t("rate")+'</label><div class="rate" id="rate">'+[1,2,3,4,5].map(function(n){return '<button data-s="'+n+'" aria-label="'+n+'">★</button>'}).join("")+'</div><textarea id="cm" rows="2" placeholder="'+t("cm")+'"></textarea><button class="ghost" id="post" data-p="'+p.id+'">'+t("send")+'</button></div>':'<p class="meta">'+t("need")+'</p>';
+ openSheet('<h2>'+esc(p.name)+'</h2><div class="meta">'+CATS[p.cat].i+" "+cname(p.cat)+" · "+p.yrs+" "+t("ye")+" · "+p.km.toFixed(1)+" "+t("km")+" · "+p.price+" "+t("da")+'+</div><p class="stars">★ '+(avg(p)?avg(p).toFixed(1):"–")+' <span class="meta">('+p.r.length+')</span></p><a class="wa" style="display:block" id="wab" data-p="'+p.id+'" href="'+waLink(p)+'" target="_blank" rel="noopener">'+t("wa")+'</a>'+extra(p)+'<h3>'+t("rev")+'</h3>'+revs+form+'<p><button class="ghost" id="cl">'+t("close")+'</button></p>');
+}
+function joinForm(){
+ var o=Object.keys(CATS).map(function(c){return '<option value="'+c+'">'+cname(c)+'</option>'}).join("");
+ openSheet('<h2>'+t("jt")+'</h2><div class="field"><label>'+t("nm")+'</label><input id="jn"></div><div class="field"><label>'+t("ph")+'</label><input id="jp" inputmode="numeric"></div><div class="field"><label>'+t("cat")+'</label><select id="jc">'+o+'</select></div><div class="field"><label>'+t("pr")+'</label><input id="jpr" type="number" value="1000"></div><div class="field"><label>'+t("yr")+'</label><input id="jy" type="number" value="1"></div><p id="je" class="meta"></p><button class="wa" id="js">'+t("save")+'</button> <button class="ghost" id="cl">'+t("close")+'</button>');
+}
+document.addEventListener("click",function(e){
+ var el=e.target,d;
+ if(d=el.closest("[data-l]")){S.lang=d.dataset.l;sv("qarib_lang",S.lang);shell();return}
+ if(d=el.closest("[data-c]")){S.cat=d.dataset.c;shell();return}
+ if(d=el.closest("[data-f]")){var id=+d.dataset.f,i=S.fav.indexOf(id);if(i>-1)S.fav.splice(i,1);else S.fav.push(id);sv("qarib_fav",S.fav);list();e.stopPropagation();return}
+ if(d=el.closest("#wab")){var pid=+d.dataset.p;if(S.contacted.indexOf(pid)<0){S.contacted.push(pid);sv("qarib_ct",S.contacted)}setTimeout(function(){profile(pid)},400);return}
+ if(d=el.closest("[data-p]")&&!el.closest("#post")){if(el.closest(".card"))profile(el.closest(".card").dataset.p);return}
+ if(d=el.closest("#rate [data-s]")){rating=+d.dataset.s;var bs=document.querySelectorAll("#rate button");for(var k=0;k<bs.length;k++)bs[k].classList.toggle("on",k<rating);return}
+ if(el.closest("#post")){if(!rating)return;var p=S.data.filter(function(x){return x.id==el.closest("#post").dataset.p})[0];Q.review(p,rating,$("cm").value.slice(0,300));p.r.push({s:rating,c:$("cm").value.slice(0,300)});sv("qarib_data",S.data);list();profile(p.id);return}
+ if(el.closest("#js")){var n=$("jn").value.trim(),ph=$("jp").value.replace(/\D/g,"");if(!n||ph.length<10||ph.length>15){$("je").textContent=t("bad");return}
+  if(Q.on){Q.join({name:n.slice(0,40),category:$("jc").value,base_price:+$("jpr").value||0,years:+$("jy").value||0,phone:ph});return}S.me=Date.now();sv("qarib_me",S.me);S.data.push({jobs:0,ver:false,id:S.me,name:n.slice(0,40),cat:$("jc").value,price:+$("jpr").value||0,yrs:+$("jy").value||0,km:+(Math.random()*5+.5).toFixed(1),av:1,ph:ph,r:[]});sv("qarib_data",S.data);closeSheet();list();return}
+ if(el.closest("#cl")||el===$("sheet")){closeSheet();return}
+ if(el.closest("#join")){joinForm()}
+});
+document.addEventListener("keydown",function(e){if(e.key=="Escape")closeSheet();if((e.key=="Enter"||e.key==" ")&&e.target.classList&&e.target.classList.contains("card")){e.preventDefault();profile(e.target.dataset.p)}});
+$("q").addEventListener("input",function(e){S.q=e.target.value;list()});
+$("av").addEventListener("change",function(e){S.av=e.target.checked;list()});
+$("favo").addEventListener("change",function(e){S.favo=e.target.checked;list()});
+$("sort").addEventListener("change",function(e){S.sort=e.target.value;list()});
+S.minr=0;S.maxp=5000;S.ver=false;S.vw=false;S.tab="ex";S.me=ld("qarib_me",null);S.bk=ld("qarib_bk",[]);S.rq=ld("qarib_rq",[]);
+S.data.forEach(function(p){if(p.ver===undefined)p.ver=p.yrs>=6;if(p.jobs===undefined)p.jobs=(p.yrs*23+p.id*7)%300+20});
+var SK={plumber:[["Leak repair","Réparation de fuite","إصلاح تسرب",1],["Water heater","Chauffe-eau","سخان ماء",1.6],["Full installation","Installation complète","تركيب كامل",3]],electrician:[["Wiring fix","Dépannage","إصلاح أسلاك",1],["Panel upgrade","Tableau électrique","لوحة كهرباء",2],["AC installation","Pose de clim","تركيب مكيف",2.2]],tutor:[["Math lesson","Cours de maths","درس رياضيات",1],["Languages","Langues","لغات",1],["Exam prep","Prépa examen","تحضير امتحان",1.4]],driver:[["City ride","Course en ville","مشوار داخل المدينة",1],["Airport trip","Aéroport","مطار",4],["Full day hire","Journée complète","يوم كامل",8]],mechanic:[["Diagnostic","Diagnostic","فحص",1],["Oil change","Vidange","تغيير زيت",.8],["Brakes","Freins","فرامل",1.8]],painter:[["One room","Une pièce","غرفة",1],["Apartment","Appartement","شقة",4],["Facade","Façade","واجهة",6]]};
+function L(a){return a[{en:0,fr:1,ar:2}[S.lang]]}
+function byId(id){return S.data.filter(function(x){return x.id==id})[0]}
+function save(){sv("qarib_data",S.data)}
+function toast(m){var d=document.createElement("div");d.className="toast";d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.remove()},2200)}
+function ap(p){return avg(p)?avg(p).toFixed(1):"–"}
+function wl(ph,m){return "https://wa.me/"+ph+"?text="+encodeURIComponent(m)}
+function extra(p){var sk=SK[p.cat].map(function(s){return '<div class="row rev"><span>'+L(s)+'</span><b>'+Math.round(p.price*s[3]/50)*50+" "+t("da")+'</b></div>'}).join("");
+ return '<p>'+(p.ver?'<span class="tag">✔ '+t("ver")+'</span> ':'')+''+(p.jobs?'<span class="tag">'+p.jobs+' '+t("jobs")+'</span>':'')+'</p><p>'+t("bio").replace("{y}",p.yrs).replace("{c}",cname(p.cat))+'</p><h3>'+t("svc")+'</h3>'+sk+'<div class="row" style="margin:12px 0;flex-wrap:wrap;justify-content:flex-start"><button class="ghost" data-act="book" data-p="'+p.id+'">📅 '+t("book")+'</button><a class="ghost" style="text-decoration:none;color:inherit" href="tel:+'+p.ph+'">📞 '+t("call")+'</a><a class="ghost" style="text-decoration:none;color:inherit" target="_blank" rel="noopener" href="'+wl("",p.name+" · "+cname(p.cat)+" · https://wa.me/"+p.ph).replace("wa.me/?","wa.me/?")+'">↗ '+t("share")+'</a><button class="ghost" data-act="report" data-p="'+p.id+'">⚑ '+t("report")+'</button></div>'}
+function bookForm(p){var h="";for(var i=8;i<=18;i++)h+='<option>'+(i<10?"0":"")+i+':00</option>';
+ openSheet('<h2>📅 '+t("book")+' · '+esc(p.name)+'</h2><div class="field"><label>'+t("dt")+'</label><input id="bd" type="date" min="'+new Date().toISOString().slice(0,10)+'"></div><div class="field"><label>'+t("tm")+'</label><select id="bh">'+h+'</select></div><div class="field"><label>'+t("nt")+'</label><textarea id="bn" rows="2"></textarea></div><button class="wa" data-act="bsend" data-p="'+p.id+'">'+t("bsend")+'</button> <button class="ghost" id="cl">'+t("close")+'</button>')}
+function radar(a){var h='<svg viewBox="0 0 320 320" style="grid-column:1/-1;width:100%;max-width:520px;margin:auto" role="img"><g fill="none" stroke="var(--line)">'+[1,2,3].map(function(i){return '<circle cx="160" cy="160" r="'+i*50+'"/>'}).join("")+'</g><circle cx="160" cy="160" r="5" fill="var(--brand)"/>';
+ a.forEach(function(p){var an=p.id*137.5*Math.PI/180,r=Math.min(p.km,7.2)/7.2*145,x=(160+r*Math.cos(an)).toFixed(1),y=(160+r*Math.sin(an)).toFixed(1);h+='<g data-rp="'+p.id+'" style="cursor:pointer"><circle cx="'+x+'" cy="'+y+'" r="14" fill="'+(p.av?"var(--wa)":"var(--mute)")+'"/><text x="'+x+'" y="'+(+y+4)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">'+esc(p.name[0])+'</text><text x="'+x+'" y="'+(+y+26)+'" text-anchor="middle" font-size="9" fill="var(--ink)">'+p.km.toFixed(1)+t("km")+'</text></g>'});
+ $("list").innerHTML=h+'</svg>'}
+function r2(){var h="",tt=S.tab,o=Object.keys(CATS).map(function(c){return '<option value="'+c+'">'+CATS[c].i+" "+cname(c)+'</option>'}).join("");
+ if(tt=="bk"){h='<h2>📅 '+t("bk")+'</h2>'+(S.bk.length?S.bk.slice().reverse().map(function(b){var p=byId(b.p);if(!p)return"";return '<div class="box"><div class="row"><b>'+esc(p.name)+'</b><span class="meta">'+cname(p.cat)+'</span></div><div class="meta">'+esc(b.d)+" · "+esc(b.h)+(b.n?" · "+esc(b.n):"")+'</div><div class="row" style="margin-top:8px"><select data-bs="'+b.id+'">'+["pending","confirmed","done","cancelled"].map(function(s,i){return '<option value="'+s+'"'+(b.st==s?" selected":"")+'>'+t("st"+(i+1))+'</option>'}).join("")+'</select><button class="ghost" data-rp="'+p.id+'">★</button><button class="ghost" data-act="bdel" data-b="'+b.id+'">✕</button></div></div>'}).join(""):'<div class="empty">'+t("nobk")+'</div>')}
+ else if(tt=="rq"){h='<h2>📝 '+t("rqt")+'</h2><div class="box"><div class="field"><label>'+t("cat")+'</label><select id="rc">'+o+'</select></div><div class="field"><label>'+t("dsc")+'</label><textarea id="rd" rows="3"></textarea></div><div class="field"><label>'+t("bud")+'</label><input id="rb" type="number" value="2000"></div><div class="field"><label>'+t("urg")+'</label><select id="ru"><option>'+t("u1")+'</option><option>'+t("u2")+'</option><option>'+t("u3")+'</option></select></div><button class="wa" data-act="rpost">'+t("rqs")+'</button></div>'+S.rq.slice().reverse().map(function(q){var m=S.data.filter(function(p){return p.cat==q.c}).sort(function(a,b){return avg(b)-avg(a)}).slice(0,3);return '<div class="box"><div class="row"><b>'+CATS[q.c].i+" "+cname(q.c)+'</b><button class="ghost" data-act="rdel" data-b="'+q.id+'">✕</button></div><div class="meta">'+esc(q.d)+" · "+q.b+" "+t("da")+" · "+esc(q.u)+'</div><h4 style="margin:10px 0 2px">'+t("mt")+'</h4>'+m.map(function(p){return '<div class="row rev"><span>'+esc(p.name)+' <span class="stars">★'+ap(p)+'</span></span><a class="wa" target="_blank" rel="noopener" href="'+wl(p.ph,t("rmsg").replace("{c}",cname(q.c)).replace("{d}",q.d).replace("{b}",q.b).replace("{u}",q.u))+'">WhatsApp</a></div>'}).join("")+'</div>'}).join("")}
+ else{var p=S.me&&byId(S.me);h='<h2>👤 '+t("me")+'</h2>';
+  if(!p)h+='<div class="empty">'+t("nopro")+'</div><button class="fab" data-act="join">'+t("jt")+'</button>';
+  else h+='<div class="name" style="font-size:20px">'+esc(p.name)+'</div><div class="stats"><div class="stat"><b>'+(p.vw||0)+'</b>'+t("vws")+'</div><div class="stat"><b>'+(p.ct||0)+'</b>'+t("cts")+'</div><div class="stat"><b>'+ap(p)+'</b>★ ('+p.r.length+')</div></div><div class="box row"><span>'+t("av")+'</span><button class="ghost" data-act="avt" data-p="'+p.id+'">'+(p.av?"● "+t("on"):"○ "+t("off"))+'</button></div><div class="box row"><span>'+t("pr")+'</span><span><input id="pp" type="number" value="'+p.price+'" style="width:90px"> <button class="ghost" data-act="psave" data-p="'+p.id+'">'+t("save")+'</button></span></div><h3>'+t("rev")+'</h3>'+p.r.map(function(r,i){return '<div class="box"><span class="stars">'+"★".repeat(r.s)+'</span> '+esc(r.c)+(r.re?'<div class="meta">↳ '+esc(r.re)+'</div>':'<div class="row" style="margin-top:6px"><input id="rr'+i+'" style="flex:1"><button class="ghost" data-act="rrep" data-p="'+p.id+'" data-i="'+i+'">'+t("reply")+'</button></div>')+'</div>'}).join("");
+  h+='<p>'+(Q.on?(Q.user?'<button class="ghost" data-act="out">'+Q.x("out")+'</button> <button class="ghost" data-act="del">'+Q.x("del")+'</button>':'<button class="ghost" data-act="in">'+Q.x("si")+'</button>'):'<button class="ghost" data-act="reset">'+t("rst")+'</button>')+'</p>'}
+ $("v2").innerHTML=h}
+var _s=shell;shell=function(){_s();$("verl").textContent="✔ "+t("ver");$("mpl").textContent=t("mp");$("mpv").textContent=S.maxp;
+ $("minr").innerHTML=[0,3,4,4.5].map(function(v){return '<option value="'+v+'">★ '+(v?v+"+":t("all"))+'</option>'}).join("");$("minr").value=S.minr;
+ $("vw").textContent=S.vw?"☰ "+t("vw1"):"◎ "+t("vw2");
+ $("nav").innerHTML=[["ex","🔎"],["bk","📅"],["rq","📝"],["me","👤"]].map(function(x){return '<button data-t="'+x[0]+'" aria-pressed="'+(S.tab==x[0])+'"><b>'+x[1]+'</b>'+t(x[0])+'</button>'}).join("");
+ $("v1").hidden=S.tab!="ex";$("v2").hidden=S.tab=="ex";if(S.tab!="ex")r2()};
+var _l2=list;list=function(){_l2();if(S.tab!="ex")r2()};
+$("ver").onchange=function(){S.ver=this.checked;list()};$("minr").onchange=function(){S.minr=+this.value;list()};
+$("maxp").oninput=function(){S.maxp=+this.value;$("mpv").textContent=S.maxp;list()};
+$("th").onclick=function(){var r=document.documentElement,dk=r.dataset.theme?r.dataset.theme=="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.dataset.theme=dk?"light":"dark"};
+document.addEventListener("change",function(e){var b=e.target.dataset.bs&&S.bk.filter(function(x){return x.id==e.target.dataset.bs})[0];if(b){b.st=e.target.value;Q.bst(b,b.st);sv("qarib_bk",S.bk)}});
+document.addEventListener("click",function(e){var el=e.target,d;
+ if(d=el.closest("[data-t]")){S.tab=d.dataset.t;shell();scrollTo(0,0);return}
+ if(d=el.closest("[data-rp]")){profile(d.dataset.rp);return}
+ if(d=el.closest("#wab")){var q=byId(d.dataset.p);q.ct=(q.ct||0)+1;save();if(Q.on){e.preventDefault();var hr=d.href;Q.need(function(){Q.contact(q);window.open(hr,"_blank")})}return}
+ if(el.closest("#vw")){S.vw=!S.vw;shell();return}
+ if(!(d=el.closest("[data-act]")))return;var a=d.dataset.act,p=d.dataset.p?byId(d.dataset.p):null;
+ if(a=="book")Q.need(function(){bookForm(p)});
+ else if(a=="bsend"){var dt=$("bd").value;if(!dt){toast(t("pd"));return}var b={id:Date.now(),p:p.id,d:dt,h:$("bh").value,n:$("bn").value.slice(0,200),st:"pending"};S.bk.push(b);Q.book(p,b);sv("qarib_bk",S.bk);p.ct=(p.ct||0)+1;save();if(S.contacted.indexOf(p.id)<0){S.contacted.push(p.id);sv("qarib_ct",S.contacted)}window.open(wl(p.ph,t("bmsg").replace("{c}",cname(p.cat)).replace("{d}",b.d).replace("{h}",b.h).replace("{n}",b.n)),"_blank");closeSheet();toast(t("sv2"));if(S.tab!="ex")r2()}
+ else if(a=="report"){p.rep=(p.rep||0)+1;Q.report(p);save();toast(t("rpd"))}
+ else if(a=="bdel"){Q.bdel(d.dataset.b);S.bk=S.bk.filter(function(x){return x.id!=d.dataset.b});sv("qarib_bk",S.bk);r2()}
+ else if(a=="rdel"){S.rq=S.rq.filter(function(x){return x.id!=d.dataset.b});sv("qarib_rq",S.rq);r2()}
+ else if(a=="rpost"){var ds=$("rd").value.trim();if(!ds){toast(t("dsc"));return}Q.req($("rc").value,ds.slice(0,300),+$("rb").value||0,$("ru").value);S.rq.push({id:Date.now(),c:$("rc").value,d:ds.slice(0,300),b:+$("rb").value||0,u:$("ru").value});sv("qarib_rq",S.rq);r2()}
+ else if(a=="avt"){p.av=p.av?0:1;Q.upd(p,{available:!!p.av});save();list()}
+ else if(a=="psave"){p.price=+$("pp").value||p.price;Q.upd(p,{base_price:p.price});save();toast(t("sv2"));list()}
+ else if(a=="rrep"){var i=+d.dataset.i,v=$("rr"+i).value.trim();if(v){p.r[i].re=v.slice(0,300);Q.reply(p.r[i],v.slice(0,300));save();r2()}}
+ else if(a=="join")joinForm();
+ else if(a=="reset"){["qarib_data","qarib_fav","qarib_ct","qarib_me","qarib_bk","qarib_rq"].forEach(function(k){try{localStorage.removeItem(k)}catch(x){}});location.reload()}
+});
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
+Q.init(function(){shell()});
+</script>
+</body>
+</html>

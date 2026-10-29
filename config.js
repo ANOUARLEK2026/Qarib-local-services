@@ -1,0 +1,2 @@
+// Paste your Supabase values (Project Settings > API). Use the anon/public key ONLY, never service_role.
+window.QARIB_CONFIG = { SUPABASE_URL: "https://eexovxsghgjqxycouisb.supabase.co", SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVleG92eHNnaGdqcXh5Y291aXNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMxMjkxNTUsImV4cCI6MjEwODcwNTE1NX0.n5jlEjWnaqAwo3_yftQZrmFiCGtgbbwNXMN4Gswnl58" };
